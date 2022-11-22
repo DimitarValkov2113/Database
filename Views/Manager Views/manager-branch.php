@@ -70,6 +70,7 @@ include 'db.php';
                         ?>
                     </tbody>
                 </table>
+            <a href="edit-branch.php"><button type="button" class="btn btn-primary" target=”_blank”>Edit Branch</button></a>
             </div>
         </div>
     </div>

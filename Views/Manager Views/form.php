@@ -14,11 +14,8 @@ if( isset($_POST['branchadd']) ){
 
         $stmt3 = $mysql->prepare("INSERT INTO Branch (ID, Address) VALUE (:ID, :Address)");
 
-        $stmt3->bindParam(":ID", $id);
-        $stmt3->bindParam(":Address", $address);
-        // Insert one row
-        $id = $_POST['branchid'];
-        $address = $_POST['branchaddress'];
+        $stmt3->bindParam(":ID", $_POST['branchid']);
+        $stmt3->bindParam(":Address", $_POST['branchaddress']);
         $stmt3->execute();
         }  
 
