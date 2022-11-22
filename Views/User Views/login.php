@@ -51,7 +51,7 @@ $conn = connect();
         if (empty($customer_received)){
             echo "This account does not exist!!!";
         }
-        elseif (isset($customer_received)){
+        else{
             if ($customer_received['Password'] == $submitted['inputPassword']){
                 $_SESSION["user_email"] = $customer_received['Email'];
             }
@@ -66,8 +66,6 @@ function pre_r( $array ) {
     print_r($array);
     echo '</pre>';
 }
-
-
 ?>
 
 <script>

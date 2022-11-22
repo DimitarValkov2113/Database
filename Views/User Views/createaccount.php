@@ -57,6 +57,37 @@ $conn = connect();
         </div>
     </div>
 </div>
+<?php
+    pre_r($_POST);
+    $submitted = $_POST;
+
+if (isset($submitted['inputEmail'])) {
+    $email_received = $submitted['inputEmail'];
+
+    $query = "SELECT * FROM customer WHERE Email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->execute([$email_received]);
+    $customer_received = $stmt->fetch();
+
+    if (empty($customer_received)) {
+        $query = "INSERT INTO customer(ID, FirstName, LastName, Address, Postcode, Email, DateOfBirth, CardDetails, LoyaltyPoints) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $id = 932932938494;
+        $stmt->execute([$id, $submitted['inputFirstName'], $submitted['inputLastName'], $submitted['inputLastName'], $submitted['inputAddress'], $submitted['inputPostcode'], $submitted['inputEmail'], $submitted['inputDateOfBirth'], $submitted['inputCardDetails'], 0]);
+    }
+    else{
+        echo "This email address already exists";
+    }
+}
+?>
+
+<?php
+function pre_r( $array ) {
+    echo '<pre>';
+    print_r($array);
+    echo '</pre>';
+}
+?>
 
 </body>
 </html>
