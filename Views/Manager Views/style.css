@@ -1,10 +1,11 @@
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+#navbar {
+    padding-bottom: 25px;
 }
 
-td{
-    text-align: center;
-    width:5em;
-    height:auto;
+#main {
+
+    background-color: grey;
+    /* background: url(unknown.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat; */
 }

@@ -12,14 +12,14 @@ if( isset($_POST['branchadd']) ){
     if(is_int($id)&& mb_strlen($id)==10){
         
 
-        $stmt = $mysql->prepare("INSERT INTO Branch (ID, Address) VALUE (:ID, :Address)");
+        $stmt3 = $mysql->prepare("INSERT INTO Branch (ID, Address) VALUE (:ID, :Address)");
 
-        $stmt->bindParam(":ID", $id);
-        $stmt->bindParam(":Address", $address);
+        $stmt3->bindParam(":ID", $id);
+        $stmt3->bindParam(":Address", $address);
         // Insert one row
         $id = $_POST['branchid'];
         $address = $_POST['branchaddress'];
-        $stmt->execute();
+        $stmt3->execute();
         }  
 
     else{
@@ -30,12 +30,43 @@ if( isset($_POST['branchadd']) ){
 
 if(isset($_POST['branchdelete'])){
 
+   
     $id= (int) $_POST['branchid'];
-
     
     $stmt2 = $mysql->prepare("DELETE FROM BRANCH WHERE ID =$id" );
     $stmt2->execute();  
 }
+// Check that a form has been submitted
+if( isset($_POST['staffadd']) ){
+
+        $stmt = $mysql->prepare("INSERT INTO Staff (ID, FirstName, LastName, Address, Postcode, Salary, Disciplinary, SickLeave, Role, Phone, Email, DateOfBirth, BranchID) VALUE (:ID, :FirstName, :LastName, :Address, :Postcode, :Salary, :Disciplinary, :SickLeave, :Role, :Phone, :Email, :DateOfBirth, :BranchID)");
+
+        $stmt->bindParam(":ID", $_POST['staffid']);
+        $stmt->bindParam(":FirstName", $_POST['stafffirstname']);
+        $stmt->bindParam(":LastName", $_POST['stafflastname']);
+        $stmt->bindParam(":Address", $_POST['staffaddress']);
+        $stmt->bindParam(":Postcode",$_POST['staffpostcode']);
+        $stmt->bindParam(":Salary", $_POST['staffsalary']);
+        $stmt->bindParam(":Disciplinary", $_POST['staffdisciplinary']);
+        $stmt->bindParam(":SickLeave", $_POST['staffsickleave']);
+        $stmt->bindParam(":Role", $_POST['staffrole']);
+        $stmt->bindParam(":Phone", $_POST['staffphone']);
+        $stmt->bindParam(":Email", $_POST['staffemail']);
+        $stmt->bindParam(":DateOfBirth", $_POST['staffdateofbirth']);
+        $stmt->bindParam(":BranchID", $_POST['staffbranchid']);
+        $stmt->execute();
+
+}
+
+
+if(isset($_POST['staffdelete'])){
+
+    $id= (int) $_POST['staffid'];
+    $stmt2 = $mysql->prepare("DELETE FROM Staff WHERE ID =$id" );
+    $stmt2->execute();  
+}
+
+
 
 if(isset($_POST['branchedit'])){
 
