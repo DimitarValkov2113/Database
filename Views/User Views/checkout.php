@@ -1,9 +1,19 @@
+<?php
+// Start the session if it has not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include '../../connection.php';
+$conn = connect();
+?>
+
 <!DOCTYPE html>
 <html lang="en-UK">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Alpha Watches</title>
+    <title>Checkout</title>
 </head>
 
 
@@ -12,24 +22,35 @@
 <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-
 <?php
-include '../../connection.php';
-$conn = connect();
 $inputted_id = NULL;
 if (isset($_GET['id'])){
     $inputted_id = $_GET['id'] ?? null;
 }
 
-
-
 $query = "SELECT * FROM watch WHERE ID = ?";
 $stmt = $conn->prepare($query);
 $stmt->execute([$inputted_id]);
 $watch_received = $stmt->fetch();
-
-
 ?>
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="pre-built-watches.php">Home</a>
+                </li>
+            </ul>
+            <a class="btn btn-outline-success" href="login.php">Login</a>
+        </div>
+    </div>
+</nav>
+
 <div class="container">
     <div class="row">
 
@@ -99,18 +120,30 @@ $watch_received = $stmt->fetch();
 <?php
     pre_r($_POST);
     $submitted = $_POST;
-    $email_received = $submitted['inputEmail'];
-    $query = "SELECT * FROM customer WHERE Email = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->execute([$email_received]);
-    $customer_received = $stmt->fetch();
 
-    if (empty($customer_received)){
-        $query = "INSERT INTO customer; VALUES (?)";
+    if (isset($submitted['inputEmail'])){
+        $email_received = $submitted['inputEmail'];
+
+        $query = "SELECT * FROM customer WHERE Email = ?";
         $stmt = $conn->prepare($query);
-        $stmt->execute([9319349342, $submitted['inputFirstName'], $submitted['inputLastName'], $submitted['inputLastName'], $submitted['inputAddress'], $submitted['inputPostcode'], $submitted['inputEmail'], $submitted['inputDateOfBirth'], $submitted['inputCardDetails'], 5]);
+        $stmt->execute([$email_received]);
+        $customer_received = $stmt->fetch();
+
+        if (empty($customer_received)){
+            $query = "INSERT INTO customer(ID, FirstName, LastName, Address, Postcode, Email, DateOfBirth, CardDetails, LoyaltyPoints) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $id = 9319349342;
+            $stmt->execute([$id, $submitted['inputFirstName'], $submitted['inputLastName'], $submitted['inputLastName'], $submitted['inputAddress'], $submitted['inputPostcode'], $submitted['inputEmail'], $submitted['inputDateOfBirth'], $submitted['inputCardDetails'], 5]);
+
+            $query = "INSERT INTO customer(ID, Date, Time, Price, PaymentMethod, CustomerID, WatchID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->execute([9319349342, date("d-m-Y"), date("h:i:sa"), $watch_received['Price'], 'Card', $id, $watch_received['ID'] , 5]);
+        }
+        elseif (isset($customer_received)){
+        }
     }
 ?>
+
 <?php
 function pre_r( $array ) {
     echo '<pre>';

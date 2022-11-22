@@ -1,5 +1,14 @@
-<!DOCTYPE html>
+<?php
+// Start the session if it has not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+include '../../connection.php';
+$conn = connect();
+?>
+
+<!DOCTYPE html>
 <html lang="en-UK">
 <head>
     <meta charset="utf-8">
@@ -15,8 +24,6 @@
 
 
 <?php
-include '../../connection.php';
-$conn = connect();
 $query = "SELECT * FROM watch";
 $stmt = $conn->prepare($query);
 $stmt->execute();
