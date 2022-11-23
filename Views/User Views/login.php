@@ -53,7 +53,16 @@ $conn = connect();
         }
         else{
             if ($customer_received['Password'] == $submitted['inputPassword']){
+                $_SESSION["user_ID"] = $customer_received['ID'];
+                $_SESSION["user_firstname"] = $customer_received['FirstName'];
+                $_SESSION["user_lastname"] = $customer_received['LastName'];
+                $_SESSION["user_address"] = $customer_received['Address'];
+                $_SESSION["user_postcode"] = $customer_received['Postcode'];
                 $_SESSION["user_email"] = $customer_received['Email'];
+                $_SESSION["user_password"] = $customer_received['Password'];
+                $_SESSION["user_dob"] = $customer_received['DateOfBirth'];
+                $_SESSION["user_card_details"] = $customer_received['CardDetails'];
+                $_SESSION["user_loyalty_points"] = $customer_received['LoyaltyPoints'];
             }
         }
     }
